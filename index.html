@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jonne van Gans – territoriaal en dol op rust</title>
+<meta name="description" content="Jonne van Gans is een territoriale gans die van rust houdt en drie neefjes heeft: Shiq, Sheq en Kwak.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E3EDE9; --surface:#F4F8F6; --ink:#1B2A24; --muted:#4B5F56;
+  --line:rgba(27,42,36,.22); --pond:#BCD7D0; --pond-loud:#F2D9A8;
+  --beak:#E8801A; --sign:#F3C93C; --on-beak:#1B2A24;
+  --red:#D8402F; --blue:#2F63D6; --green:#2A9460;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101C18; --surface:#182822; --ink:#E7F0EB; --muted:#A8BCB2;
+    --line:rgba(231,240,235,.22); --pond:#1F3B34; --pond-loud:#4A3317;
+    --red:#FF6B57; --blue:#7CA0FF; --green:#4CC98A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101C18; --surface:#182822; --ink:#E7F0EB; --muted:#A8BCB2;
+  --line:rgba(231,240,235,.22); --pond:#1F3B34; --pond-loud:#4A3317;
+  --red:#FF6B57; --blue:#7CA0FF; --green:#4CC98A;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+[hidden]{display:none !important}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Newsreader",Georgia,"Times New Roman",serif;
+  font-size:1.125rem; line-height:1.6;
+}
+h1,h2,h3,.btn,.brand,nav a,.sign li{font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(1.25rem,env(safe-area-inset-left));padding-right:max(1.25rem,env(safe-area-inset-right))}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-top:1.1rem;padding-bottom:1.1rem}
+.brand{font-weight:700;font-size:1.05rem;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+nav{display:flex;gap:.4rem}
+nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:1rem;padding:.45rem .95rem;border-radius:999px;border:2px solid transparent}
+nav a:hover{border-color:var(--line)}
+nav a[aria-current="page"]{border-color:var(--ink)}
+a:focus-visible,button:focus-visible,canvas:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2.5rem;align-items:center;padding-top:1.5rem;padding-bottom:4rem}
+h1{margin:0;font-weight:800;font-size:clamp(3.4rem,11vw,8.4rem);line-height:.86;letter-spacing:-.035em;outline:none}
+h1 span{display:block}
+h1 .van{font-size:.38em;font-weight:500;letter-spacing:-.01em;margin:.12em 0 .1em .12em;line-height:1}
+.lead{font-size:1.3rem;line-height:1.5;max-width:30rem;margin:1.6rem 0 1.8rem}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.25rem}
+.btn{
+  appearance:none;border:2px solid var(--ink);background:var(--beak);color:var(--on-beak);
+  font-weight:700;font-size:1.05rem;padding:.8rem 1.4rem;border-radius:999px;cursor:pointer;
+  text-decoration:none;display:inline-block;line-height:1.2;
+}
+.btn:hover{filter:brightness(1.06)}
+.btn.loud{background:var(--ink);color:var(--bg)}
+.hint{color:var(--muted);font-size:1rem;margin:0}
+.status{margin:1.25rem 0 0;font-style:italic;color:var(--muted);min-height:1.6em}
+
+/* 3d stage */
+.stage{
+  position:relative;background:var(--pond);border:3px solid var(--ink);overflow:hidden;
+  border-radius:46% 54% 52% 48% / 52% 44% 56% 48%;
+  transition:background .35s,border-color .35s;
+}
+.stage.goose{aspect-ratio:1 / 1.02}
+.stage.ducks{aspect-ratio:2.2 / 1;border-radius:50% 50% 48% 52% / 62% 58% 42% 38%}
+.stage.loud{background:var(--pond-loud);border-color:var(--beak)}
+.stage canvas{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:2rem;margin:0;color:var(--muted)}
+
+/* sections */
+.band{border-top:2px solid var(--line);padding-top:3rem;padding-bottom:3.5rem}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:2.5rem}
+h2{margin:0 0 1rem;font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.05;letter-spacing:-.02em}
+p{margin:0 0 1.1rem;max-width:40rem}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem}
+.plain{list-style:none;margin:0;padding:0}
+.plain li{padding:.7rem 0;border-bottom:1px solid var(--line)}
+.plain li:first-child{border-top:1px solid var(--line)}
+.next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem}
+.next h2{margin:0}
+
+/* neefjes */
+.page-head{padding-top:1.5rem;padding-bottom:2rem}
+.page-head h1{font-size:clamp(3rem,9.5vw,7rem);line-height:.9}
+.page-head .lead{margin-bottom:0}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.25rem}
+.kid{border-top:10px solid var(--c);padding-top:1rem}
+.kid h2{font-size:2.4rem;margin-bottom:.6rem}
+.kid p{margin:0}
+.sign{
+  background:var(--sign);color:#1B2A24;border:4px solid #1B2A24;border-radius:14px;
+  padding:1.6rem 1.9rem 1.4rem;max-width:34rem;transform:rotate(-1.2deg);
+}
+.sign h2{color:#1B2A24}
+.sign ul{list-style:none;margin:0;padding:0}
+.sign li{font-weight:600;font-size:1.2rem;line-height:1.3;padding:.6rem 0;border-top:2px solid rgba(27,42,36,.35)}
+.rules{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.5rem;align-items:center}
+
+footer{border-top:2px solid var(--line);padding-top:1.5rem;padding-bottom:2.5rem;color:var(--muted);font-size:1rem}
+footer p{margin:0}
+
+@media (max-width:860px){
+  .hero,.cols,.two,.rules{grid-template-columns:minmax(0,1fr)}
+  .hero{gap:2rem;padding-bottom:3rem}
+  .trio{grid-template-columns:minmax(0,1fr);gap:1.75rem}
+  .stage.ducks{aspect-ratio:1.35 / 1}
+  .sign{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .stage{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#/">J. van Gans</a>
+    <nav aria-label="Hoofdmenu">
+      <a href="#/" id="nav-home">Jonne</a>
+      <a href="#/neefjes" id="nav-neefjes">De neefjes</a>
+    </nav>
+  </header>
+</div>
+
+<main>
+  <!-- Pagina 1 -->
+  <div id="page-home">
+    <div class="wrap hero">
+      <div>
+        <h1 id="h1-home" tabindex="-1"><span>Jonne</span><span class="van">van</span><span>Gans</span></h1>
+        <p class="lead">Een gans met een duidelijke grens. Hij is territoriaal, houdt van rust en heeft drie neefjes die daar niets van willen weten.</p>
+        <div class="controls">
+          <button class="btn" id="herrie" type="button">Maak herrie</button>
+          <p class="hint">Sleep over de gans om hem te draaien.</p>
+        </div>
+        <p class="status" id="status" aria-live="polite">Jonne is tevreden. Het is stil.</p>
+      </div>
+      <div class="stage goose" id="stage-goose">
+        <canvas id="canvas-goose" tabindex="0" role="img" aria-label="3D-model van Jonne van Gans. Sleep of gebruik de pijltjestoetsen om hem te draaien."></canvas>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="cols">
+        <h2>Een gans met een grens</h2>
+        <div>
+          <p>Jonne van Gans woont aan de rand van de vijver en weet precies waar zijn gebied begint en eindigt. Wie de grens overstapt, krijgt eerst een blik. Daarna een sis.</p>
+          <p>Verder is hij een gans van weinig woorden. Het liefst zit hij in de ochtendzon, in stilte, met zijn snavel onder zijn vleugel. Dat noemt hij zelf werken aan zijn terrein.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="two">
+        <div>
+          <h2>Dit vindt Jonne fijn</h2>
+          <ul class="plain">
+            <li>Rust</li>
+            <li>De ochtendzon op zijn stuk oever</li>
+            <li>Een hek dat dicht blijft</li>
+            <li>Water zonder rimpels</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Dit kan hij niet hebben</h2>
+          <ul class="plain">
+            <li>Drie neefjes die door elkaar praten</li>
+            <li>Brood gooien zonder te vragen</li>
+            <li>Bezoek dat niet is aangekondigd</li>
+            <li>Muziek over het water</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="next">
+        <h2>Drie neefjes. Nul rust.</h2>
+        <a class="btn" href="#/neefjes">Ontmoet de neefjes</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagina 2 -->
+  <div id="page-neefjes" hidden>
+    <div class="wrap page-head">
+      <h1 id="h1-neefjes" tabindex="-1">Shiq, Sheq en Kwak</h1>
+      <p class="lead">Drie neefjes die bij oom Jonne komen logeren. Hij had liever een stille week gehad.</p>
+    </div>
+
+    <div class="wrap" style="padding-bottom:3rem">
+      <div class="stage ducks" id="stage-ducks">
+        <canvas id="canvas-ducks" tabindex="0" role="img" aria-label="3D-model van de drie neefjes met een rode, blauwe en groene pet. Sleep of gebruik de pijltjestoetsen om ze te draaien."></canvas>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="trio">
+        <article class="kid" style="--c:var(--red)">
+          <h2>Shiq</h2>
+          <p>De snelste van de drie. Ligt al in de vijver voordat Jonne zijn ogen open heeft.</p>
+        </article>
+        <article class="kid" style="--c:var(--blue)">
+          <h2>Sheq</h2>
+          <p>Stelt de hele dag vragen. Waarom is dit jouw gras? Sinds wanneer? En waarom eigenlijk?</p>
+        </article>
+        <article class="kid" style="--c:var(--green)">
+          <h2>Kwak</h2>
+          <p>Zegt weinig. Weet precies waar Jonnes grens ligt en loopt er net overheen.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="rules">
+        <div>
+          <h2>Wie bij Jonne logeert, houdt zich aan de regels</h2>
+          <p>Ze hangen aan het hek. Jonne controleert ze elke ochtend.</p>
+        </div>
+        <aside class="sign" aria-label="Huisregels van Jonne">
+          <h2>Huisregels</h2>
+          <ul>
+            <li>Niet over het hek.</li>
+            <li>Voor tien uur 's ochtends geen geluid.</li>
+            <li>Brood alleen op verzoek.</li>
+            <li>Neefjes blijven aan de waterkant.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+
+    <div class="wrap band">
+      <div class="next">
+        <h2>Terug naar de gans</h2>
+        <a class="btn" href="#/">Naar Jonne</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="wrap">
+  <footer><p>Jonne van Gans. Niet storen.</p></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var viewers = {};
+
+function M(c, r){ return new THREE.MeshStandardMaterial({color:c, roughness:(r==null?0.85:r), metalness:0}); }
+
+function fallback(canvas){
+  var p = canvas.parentElement;
+  var n = document.createElement('p');
+  n.className = 'fallback';
+  n.textContent = 'De 3D-weergave kan op dit apparaat niet worden geladen.';
+  p.appendChild(n);
+  canvas.remove();
+}
+
+function makeViewer(canvas, build){
+  if (typeof THREE === 'undefined'){ fallback(canvas); return null; }
+  var renderer = null;
+  try {
+    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+  } catch (err) { renderer = null; }
+  if (!renderer){ fallback(canvas); return null; }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x7a9a8e, 0.95));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.85);
+  sun.position.set(4, 8, 6);
+  scene.add(sun);
+  var world = new THREE.Group();
+  scene.add(world);
+
+  var api = build(world, camera);
+  var rotate = api.rotate || function(d){ world.rotation.y += d; };
+  var dragging = false, lastX = 0;
+
+  canvas.addEventListener('pointerdown', function(e){
+    dragging = true; lastX = e.clientX;
+    try { canvas.setPointerCapture(e.pointerId); } catch(_){}
+  });
+  canvas.addEventListener('pointermove', function(e){
+    if (!dragging) return;
+    var dx = e.clientX - lastX; lastX = e.clientX;
+    rotate(dx * 0.012);
+  });
+  var stop = function(){ dragging = false; };
+  canvas.addEventListener('pointerup', stop);
+  canvas.addEventListener('pointercancel', stop);
+  canvas.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft'){ rotate(-0.2); e.preventDefault(); }
+    if (e.key === 'ArrowRight'){ rotate(0.2); e.preventDefault(); }
+  });
+
+  var v = {
+    active: false,
+    api: api,
+    resize: function(){
+      var p = canvas.parentElement;
+      var w = p.clientWidth, h = p.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    },
+    render: function(dt, t){
+      api.update(dt, t);
+      if (!dragging && !reduce && api.spin){ rotate(api.spin() * dt); }
+      renderer.render(scene, camera);
+    }
+  };
+  if (window.ResizeObserver){ new ResizeObserver(function(){ v.resize(); }).observe(canvas.parentElement); }
+  window.addEventListener('resize', function(){ v.resize(); });
+  v.resize();
+  return v;
+}
+
+/* ---------- Jonne ---------- */
+function buildGoose(world, camera){
+  camera.position.set(0, 4.6, 15);
+  camera.lookAt(0, 1.5, 0);
+
+  var white = M(0xf6f4ee, .9), wing = M(0xe9e5da, .9), orange = M(0xe8801a, .6),
+      black = M(0x151515, .4), grass = M(0x86a66a, 1), wood = M(0x8b6b4a, 1), yellow = M(0xf3c93c, .7);
+
+  var gnd = new THREE.Mesh(new THREE.CylinderGeometry(3.9, 3.9, 0.12, 48), grass);
+  gnd.position.y = -0.06; world.add(gnd);
+
+  var N = 22, i;
+  for (i = 0; i < N; i++){
+    var a = i / N * Math.PI * 2, r = 3.5;
+    var post = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.55, 0.14), wood);
+    post.position.set(Math.cos(a) * r, 0.27, Math.sin(a) * r);
+    world.add(post);
+    var cap = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.1, 0.17), yellow);
+    cap.position.set(Math.cos(a) * r, 0.6, Math.sin(a) * r);
+    world.add(cap);
+  }
+
+  var goose = new THREE.Group();
+  goose.position.x = -0.5;
+  world.add(goose);
+  world.rotation.y = -0.6;
+
+  var shadow = new THREE.Mesh(new THREE.CircleGeometry(1, 28), new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:.2}));
+  shadow.rotation.x = -Math.PI / 2; shadow.scale.set(2.1, 1.3, 1); shadow.position.set(0.1, 0.02, 0);
+  goose.add(shadow);
+
+  var body = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 24), white);
+  body.scale.set(1.55, 1, 1); body.position.y = 1.35; goose.add(body);
+
+  var tg = new THREE.ConeGeometry(0.35, 0.95, 10); tg.scale(0.5, 1, 1.6);
+  var tail = new THREE.Mesh(tg, white);
+  tail.rotation.z = Math.PI / 2 - 0.3; tail.position.set(-1.6, 1.5, 0); goose.add(tail);
+
+  var wings = [];
+  [-1, 1].forEach(function(s){
+    var pivot = new THREE.Group();
+    pivot.position.set(0.4, 1.75, s * 0.86);
+    goose.add(pivot);
+    var w = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), wing);
+    w.scale.set(1.0, 0.16, 0.42); w.position.set(-0.8, -0.1, 0);
+    pivot.add(w);
+    wings.push({pivot: pivot, s: s});
+
+    var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.55, 10), orange);
+    leg.position.set(0.05, 0.3, s * 0.42); goose.add(leg);
+    var fg = new THREE.ConeGeometry(0.3, 0.55, 3); fg.scale(0.25, 1, 1.2);
+    var foot = new THREE.Mesh(fg, orange);
+    foot.rotation.z = -Math.PI / 2; foot.position.set(0.3, 0.04, s * 0.42); goose.add(foot);
+  });
+
+  var head = new THREE.Group(); goose.add(head);
+  head.add(new THREE.Mesh(new THREE.SphereGeometry(0.34, 24, 18), white));
+  var bg = new THREE.ConeGeometry(0.17, 0.62, 14); bg.scale(0.6, 1, 1.5);
+  var beak = new THREE.Mesh(bg, orange);
+  beak.rotation.z = -Math.PI / 2; beak.position.set(0.55, -0.06, 0); head.add(beak);
+
+  var brows = [];
+  [-1, 1].forEach(function(s){
+    var e = new THREE.Mesh(new THREE.SphereGeometry(0.065, 12, 10), black);
+    e.position.set(0.2, 0.1, s * 0.27); head.add(e);
+    var b = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.045, 0.07), black);
+    b.position.set(0.2, 0.22, s * 0.26); b.rotation.y = -s * 0.5;
+    head.add(b); brows.push(b);
+  });
+
+  var calm = [[0.9, 1.75], [1.25, 2.3], [1.05, 2.9], [1.4, 3.4]];
+  var mad  = [[0.9, 1.7],  [1.5, 1.95], [2.1, 2.15], [2.7, 2.2]];
+  var neck = null, headBase = new THREE.Vector3();
+
+  function buildNeck(t){
+    var pts = calm.map(function(p, k){
+      return new THREE.Vector3(p[0] + (mad[k][0] - p[0]) * t, p[1] + (mad[k][1] - p[1]) * t, 0);
+    });
+    var geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 28, 0.21, 12, false);
+    if (neck){ neck.geometry.dispose(); neck.geometry = geo; }
+    else { neck = new THREE.Mesh(geo, white); goose.add(neck); }
+    headBase.copy(pts[3]);
+  }
+
+  var state = {angry: false}, k = 0, lastK = -1;
+  buildNeck(0); head.position.copy(headBase);
+
+  return {
+    setAngry: function(v){ state.angry = v; },
+    spin: function(){ return state.angry ? 0 : 0.2; },
+    update: function(dt, t){
+      var target = state.angry ? 1 : 0;
+      k += (target - k) * Math.min(1, dt * 7);
+      if (Math.abs(target - k) < 0.002) k = target;
+      if (Math.abs(k - lastK) > 0.001){ buildNeck(k); lastK = k; }
+
+      var shake = reduce ? 0 : Math.sin(t * 38) * 0.015 * k;
+      var sway  = reduce ? 0 : Math.sin(t * 1.6) * 0.03 * (1 - k);
+      head.position.set(headBase.x, headBase.y + shake + sway, headBase.z);
+      head.rotation.z = -0.1 - 0.15 * k;
+
+      var flap = reduce ? 0 : Math.sin(t * 16) * 0.18 * k;
+      wings.forEach(function(w){
+        w.pivot.rotation.y = w.s * (k * 0.95 + flap);
+        w.pivot.rotation.z = -k * 0.5;
+      });
+      brows.forEach(function(b){ b.rotation.z = -(0.08 + 0.5 * k); });
+      body.scale.y = 1 + (reduce ? 0 : Math.sin(t * 1.8) * 0.012);
+    }
+  };
+}
+
+/* ---------- De neefjes ---------- */
+function buildDucks(world, camera){
+  camera.position.set(0, 2.9, 10.8);
+  camera.lookAt(0, 1.0, 0);
+
+  var grass = M(0x86a66a, 1), yellow = M(0xffd23f, .7), wingY = M(0xf2bd1e, .7),
+      orange = M(0xe8801a, .6), black = M(0x151515, .4);
+
+  var g = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.12, 48), grass);
+  g.scale.set(6.4, 1, 2.3); g.position.y = -0.06; world.add(g);
+
+  function duck(capColor){
+    var d = new THREE.Group();
+    var b = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 18), yellow);
+    b.scale.set(1.2, 0.95, 0.95); b.position.y = 0.7; d.add(b);
+
+    var head = new THREE.Group(); head.position.set(0.5, 1.3, 0); d.add(head);
+    head.add(new THREE.Mesh(new THREE.SphereGeometry(0.38, 24, 18), yellow));
+    var bg = new THREE.ConeGeometry(0.15, 0.5, 12); bg.scale(0.55, 1, 1.6);
+    var beak = new THREE.Mesh(bg, orange);
+    beak.rotation.z = -Math.PI / 2; beak.position.set(0.5, -0.06, 0); head.add(beak);
+
+    var capMat = M(capColor, .7);
+    var cap = new THREE.Mesh(new THREE.SphereGeometry(0.4, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), capMat);
+    cap.position.set(-0.02, 0.1, 0); cap.rotation.z = -0.12; head.add(cap);
+    var brim = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.05, 0.5), capMat);
+    brim.position.set(0.36, 0.12, 0); head.add(brim);
+
+    [-1, 1].forEach(function(s){
+      var e = new THREE.Mesh(new THREE.SphereGeometry(0.06, 10, 8), black);
+      e.position.set(0.22, 0.05, s * 0.27); head.add(e);
+      var w = new THREE.Mesh(new THREE.SphereGeometry(0.3, 14, 10), wingY);
+      w.scale.set(1, 0.6, 0.35); w.position.set(-0.05, 0.75, s * 0.52); w.rotation.z = 0.2; d.add(w);
+      var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.22, 8), orange);
+      leg.position.set(0.05, 0.12, s * 0.25); d.add(leg);
+      var fg = new THREE.ConeGeometry(0.2, 0.42, 3); fg.scale(0.25, 1, 1.1);
+      var foot = new THREE.Mesh(fg, orange);
+      foot.rotation.z = -Math.PI / 2; foot.position.set(0.22, 0.03, s * 0.25); d.add(foot);
+    });
+
+    var tg = new THREE.ConeGeometry(0.2, 0.5, 8); tg.scale(0.5, 1, 1.4);
+    var tail = new THREE.Mesh(tg, yellow);
+    tail.rotation.z = Math.PI / 2 - 0.4; tail.position.set(-0.7, 0.85, 0); d.add(tail);
+    return {group: d, head: head};
+  }
+
+  var list = [];
+  [[-2.7, 0xd8402f, 0], [0, 0x2f63d6, 1.3], [2.7, 0x2a9460, 2.6]].forEach(function(c, idx){
+    var dk = duck(c[1]);
+    dk.group.position.x = c[0];
+    dk.group.rotation.y = -0.55 + (idx - 1) * 0.12;
+    dk.phase = c[2];
+    var sh = new THREE.Mesh(new THREE.CircleGeometry(1, 24), new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:.2}));
+    sh.rotation.x = -Math.PI / 2; sh.scale.set(0.95, 0.65, 1); sh.position.set(c[0], 0.02, 0);
+    world.add(sh);
+    world.add(dk.group);
+    list.push(dk);
+  });
+
+  return {
+    rotate: function(d){ list.forEach(function(dk){ dk.group.rotation.y += d; }); },
+    update: function(dt, t){
+      list.forEach(function(dk){
+        dk.group.position.y = reduce ? 0 : Math.abs(Math.sin(t * 2.2 + dk.phase)) * 0.14;
+        dk.head.rotation.z = reduce ? 0 : Math.sin(t * 1.4 + dk.phase) * 0.12;
+      });
+    }
+  };
+}
+
+viewers.goose = makeViewer(document.getElementById('canvas-goose'), buildGoose);
+viewers.ducks = makeViewer(document.getElementById('canvas-ducks'), buildDucks);
+
+/* ---------- Knop ---------- */
+var btn = document.getElementById('herrie');
+var statusEl = document.getElementById('status');
+var stageGoose = document.getElementById('stage-goose');
+var loud = false;
+btn.addEventListener('click', function(){
+  loud = !loud;
+  btn.textContent = loud ? 'Geef rust' : 'Maak herrie';
+  btn.classList.toggle('loud', loud);
+  stageGoose.classList.toggle('loud', loud);
+  statusEl.textContent = loud ? 'Jonne sist. Dit is zijn terrein.' : 'Jonne is tevreden. Het is stil.';
+  if (viewers.goose) viewers.goose.api.setAngry(loud);
+});
+
+/* ---------- Pagina's ---------- */
+var pageHome = document.getElementById('page-home');
+var pageKids = document.getElementById('page-neefjes');
+var navHome = document.getElementById('nav-home');
+var navKids = document.getElementById('nav-neefjes');
+var first = true;
+
+function route(){
+  var kids = location.hash === '#/neefjes';
+  pageHome.hidden = kids;
+  pageKids.hidden = !kids;
+  if (kids){ navKids.setAttribute('aria-current', 'page'); navHome.removeAttribute('aria-current'); }
+  else { navHome.setAttribute('aria-current', 'page'); navKids.removeAttribute('aria-current'); }
+  document.title = kids
+    ? 'De neefjes – Shiq, Sheq en Kwak'
+    : 'Jonne van Gans – territoriaal en dol op rust';
+  if (viewers.goose){ viewers.goose.active = !kids; }
+  if (viewers.ducks){ viewers.ducks.active = kids; }
+  var v = kids ? viewers.ducks : viewers.goose;
+  if (v) v.resize();
+  window.scrollTo(0, 0);
+  if (!first){ document.getElementById(kids ? 'h1-neefjes' : 'h1-home').focus({preventScroll:true}); }
+  first = false;
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* ---------- Animatielus ---------- */
+var last = performance.now(), time = 0;
+function frame(now){
+  requestAnimationFrame(frame);
+  var dt = Math.min((now - last) / 1000, 0.05);
+  last = now;
+  if (document.hidden) return;
+  time += dt;
+  for (var key in viewers){
+    var v = viewers[key];
+    if (v && v.active) v.render(dt, time);
+  }
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
